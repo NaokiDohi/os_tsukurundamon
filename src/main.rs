@@ -1,5 +1,7 @@
 // OS依存のCの標準ライブラリを無効化。これからOSを開発するので当然使えないでゲス。
 #![no_std]
+// デフォルトのエントリーポイントを削除する。同時にmain関数を消去する。
+#![no_main]
 
 use core::panic::PanicInfo;
 
@@ -11,8 +13,8 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
-fn main() {
-    // printは、OS依存の関数なので使えないでゲス〜。
-    // std out はOSによって提供される特殊なファイル記述子でゲス〜
-    // println!("Hello, world!");
+// エントリポイントを_start関数で上書き。no_mangleはユニークなシンボルをコンパイラが生成するのを防ぐ。
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    loop {}
 }
